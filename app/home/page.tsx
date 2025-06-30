@@ -68,7 +68,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-blue-50 px-4">
-      <h1 className="text-2xl font-bold text-blue-800">Today's Progress 💦</h1>
+      <h1 className="text-2xl font-bold text-blue-800">Today&apos;s Progress 💦</h1>
 
       {drankLiters === 0 ? (
         <p className="text-gray-500 text-sm">No water logged yet. Start tracking!</p>
