@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -50,52 +52,38 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* RIGHT: Droplet Chart */}
+        {/* RIGHT: Circular Water Chart */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="relative w-[150px] h-[220px]">
-            <svg viewBox="0 0 150 220" className="w-full h-full">
+          <div className="relative w-[200px] h-[200px]">
+            <svg viewBox="0 0 200 200" className="w-full h-full">
               <defs>
-                {/* Real droplet clipPath */}
-                <clipPath id="droplet">
-                  <path
-                    d="M75 0
-                       C105 50, 130 90, 75 210
-                       C20 90, 45 50, 75 0
-                       Z"
-                  />
+                <clipPath id="circle-clip">
+                  <circle cx="100" cy="100" r="90" />
                 </clipPath>
               </defs>
 
-              {/* Light droplet outline */}
-              <path
-                d="M75 0
-                   C105 50, 130 90, 75 210
-                   C20 90, 45 50, 75 0
-                   Z"
-                fill="#f1f5f9"
-                stroke="#cbd5e1"
-                strokeWidth="2"
-              />
+              {/* Outer Circle */}
+              <circle cx="100" cy="100" r="90" stroke="#ccc" strokeWidth="4" fill="#f1f5f9" />
 
-              {/* Water fill (animated) */}
+              {/* Animated Water Fill */}
               <rect
                 x="0"
-                y={220 - (fillPercent * 2.1)}
-                width="150"
-                height="220"
+                y={200 - (fillPercent * 2)}
+                width="200"
+                height="200"
                 fill="#3b82f6"
-                clipPath="url(#droplet)"
+                clipPath="url(#circle-clip)"
               >
                 <animate
                   attributeName="y"
-                  to={220 - (fillPercent * 2.1)}
+                  to={200 - (fillPercent * 2)}
                   dur="1s"
                   fill="freeze"
                   begin="0s"
                 />
                 <animate
                   attributeName="height"
-                  to={(fillPercent * 2.1)}
+                  to={(fillPercent * 2)}
                   dur="1s"
                   fill="freeze"
                   begin="0s"
@@ -103,7 +91,7 @@ export default function ResultPage() {
               </rect>
             </svg>
 
-            {/* Center text */}
+            {/* Center Text */}
             <div className="absolute inset-0 flex items-center justify-center text-blue-800 font-semibold text-lg">
               {drank}L / {goal}L
             </div>
