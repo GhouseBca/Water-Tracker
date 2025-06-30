@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -26,7 +24,7 @@ export default function ResultPage() {
     setLogs(drinkLogs.reverse())
   }, [router])
 
-  const fillPercentage = Math.min((drank / goal) * 100, 100)
+  const fillPercent = Math.min((drank / goal) * 100, 100)
 
   return (
     <div className="min-h-screen px-6 py-10 bg-white">
@@ -35,7 +33,7 @@ export default function ResultPage() {
       </h1>
 
       <div className="flex flex-col lg:flex-row gap-10 justify-center items-start">
-        {/* Drink Logs */}
+        {/* LEFT: Drink Logs */}
         <div className="w-full lg:w-1/2">
           <h2 className="text-xl font-semibold mb-4">Drink Log</h2>
           <div className="border p-4 rounded-lg shadow max-h-[400px] overflow-auto">
@@ -52,47 +50,52 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* Droplet Water Chart */}
+        {/* RIGHT: Droplet Chart */}
         <div className="w-full lg:w-1/2 flex justify-center">
           <div className="relative w-[150px] h-[220px]">
             <svg viewBox="0 0 150 220" className="w-full h-full">
-              {/* Droplet shape */}
               <defs>
-                <clipPath id="droplet-clip">
+                {/* Real droplet clipPath */}
+                <clipPath id="droplet">
                   <path
-                    d="M75 10 C90 40, 130 80, 75 210 C20 80, 60 40, 75 10"
-                    fill="#e5e7eb"
+                    d="M75 0
+                       C105 50, 130 90, 75 210
+                       C20 90, 45 50, 75 0
+                       Z"
                   />
                 </clipPath>
               </defs>
 
-              {/* Background Droplet */}
+              {/* Light droplet outline */}
               <path
-                d="M75 10 C90 40, 130 80, 75 210 C20 80, 60 40, 75 10"
-                fill="#e5e7eb"
-                stroke="#ccc"
+                d="M75 0
+                   C105 50, 130 90, 75 210
+                   C20 90, 45 50, 75 0
+                   Z"
+                fill="#f1f5f9"
+                stroke="#cbd5e1"
                 strokeWidth="2"
               />
 
-              {/* Water Level Animated Fill */}
+              {/* Water fill (animated) */}
               <rect
                 x="0"
-                y={220 - (fillPercentage * 2.1)} // Adjusted based on height
+                y={220 - (fillPercent * 2.1)}
                 width="150"
                 height="220"
                 fill="#3b82f6"
-                clipPath="url(#droplet-clip)"
+                clipPath="url(#droplet)"
               >
                 <animate
                   attributeName="y"
-                  to={220 - (fillPercentage * 2.1)}
+                  to={220 - (fillPercent * 2.1)}
                   dur="1s"
                   fill="freeze"
                   begin="0s"
                 />
                 <animate
                   attributeName="height"
-                  to={(fillPercentage * 2.1)}
+                  to={(fillPercent * 2.1)}
                   dur="1s"
                   fill="freeze"
                   begin="0s"
@@ -100,8 +103,8 @@ export default function ResultPage() {
               </rect>
             </svg>
 
-            {/* Overlay Text */}
-            <div className="absolute inset-0 flex items-center justify-center font-semibold text-blue-800 text-lg">
+            {/* Center text */}
+            <div className="absolute inset-0 flex items-center justify-center text-blue-800 font-semibold text-lg">
               {drank}L / {goal}L
             </div>
           </div>
