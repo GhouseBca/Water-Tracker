@@ -54,7 +54,7 @@ export default function ResultPage() {
 
         {/* RIGHT: Circular Water Chart */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="relative w-[300px] h-[300px]">
+          <div className="relative w-[300px] h-[400px]">
             <svg viewBox="0 0 200 200" className="w-full h-full">
               <defs>
                 <clipPath id="circle-clip">
