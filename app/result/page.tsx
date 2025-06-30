@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts'
 import { Button } from '@/components/ui/button'
-
-const COLORS = ['#00BFFF', '#d1d5db']
 
 export default function ResultPage() {
     const [logs, setLogs] = useState<{ time: string; amount: number }[]>([])
@@ -28,11 +25,6 @@ export default function ResultPage() {
         setDrank(drankLiters)
         setLogs(drinkLogs.reverse())
     }, [router])
-
-    const pieData = [
-        { name: 'Drank', value: drank },
-        { name: 'Remaining', value: Math.max(goal - drank, 0) }
-    ]
 
     return (
         <div className="min-h-screen px-6 py-10 bg-white">
