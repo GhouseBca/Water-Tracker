@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { PieChart, Pie, Cell } from 'recharts'
 import { Button } from '@/components/ui/button'
+
+const COLORS = ['#3b82f6', '#e5e7eb'] // Blue for water, gray for remaining
 
 export default function ResultPage() {
   const [logs, setLogs] = useState<{ time: string; amount: number }[]>([])
@@ -26,7 +29,10 @@ export default function ResultPage() {
     setLogs(drinkLogs.reverse())
   }, [router])
 
-  const fillPercent = Math.min((drank / goal) * 100, 100)
+  const pieData = [
+    { name: 'Drank', value: drank },
+    { name: 'Remaining', value: Math.max(goal - drank, 0) }
+  ]
 
   return (
     <div className="min-h-screen px-6 py-10 bg-white">
@@ -52,47 +58,28 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* RIGHT: Circular Water Chart */}
+        {/* RIGHT: Pie Chart */}
         <div className="w-full lg:w-1/2 flex justify-center">
-          <div className="relative w-[300px] h-[400px]">
-            <svg viewBox="0 0 200 200" className="w-full h-full">
-              <defs>
-                <clipPath id="circle-clip">
-                  <circle cx="100" cy="100" r="90" />
-                </clipPath>
-              </defs>
-
-              {/* Outer Circle */}
-              <circle cx="100" cy="100" r="90" stroke="#ccc" strokeWidth="4" fill="#f1f5f9" />
-
-              {/* Animated Water Fill */}
-              <rect
-                x="0"
-                y={200 - (fillPercent * 2)}
-                width="200"
-                height="200"
-                fill="#3b82f6"
-                clipPath="url(#circle-clip)"
+          <div className="relative w-[300px] h-[300px]">
+            <PieChart width={300} height={300}>
+              <Pie
+                data={pieData}
+                cx="50%"
+                cy="50%"
+                innerRadius={80}
+                outerRadius={100}
+                paddingAngle={5}
+                dataKey="value"
+                label={({ name, percent }: { name: string; percent?: number }) =>
+                  `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
+                }
               >
-                <animate
-                  attributeName="y"
-                  to={200 - (fillPercent * 2)}
-                  dur="1s"
-                  fill="freeze"
-                  begin="0s"
-                />
-                <animate
-                  attributeName="height"
-                  to={(fillPercent * 2)}
-                  dur="1s"
-                  fill="freeze"
-                  begin="0s"
-                />
-              </rect>
-            </svg>
-
-            {/* Center Text */}
-            <div className="absolute inset-0 flex items-center justify-center text-blue-800 font-semibold text-lg">
+                {pieData.map((_, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+            </PieChart>
+            <div className="absolute inset-0 flex items-center justify-center text-lg font-semibold text-blue-800">
               {drank}L / {goal}L
             </div>
           </div>
